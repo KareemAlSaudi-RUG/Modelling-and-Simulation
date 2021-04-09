@@ -1,0 +1,22 @@
+%********************************************************************
+% Glossaries setup
+%********************************************************************
+\usepackage{glossaries}
+\usepackage{glossaries-extra}
+
+\makeglossaries
+
+\setabbreviationstyle[abbreviation]{long-postshort-user}
+
+\glssetcategoryattribute{abbreviation}{glossdesc}{title}
+\glssetcategoryattribute{abbreviation}{nohyperfirst}{true}
+
+\renewcommand*{\glsxtruserparen}[2]{\glsxtrfullsep{#2}(\glshyperlink[#1]{#2})}
+\glspatchtabularx
+%********************************************************************
+
+%********************************************************************
+% Abbreviations
+%********************************************************************
+\newabbreviation{bml}{BML}{Biham-Middleton-Levine}
+%********************************************************************
