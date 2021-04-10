@@ -1,3 +1,55 @@
 \section{Methodology}
 \label{sec:Methodology}
-To ascertain the assumptions made earlier on in Section \ref{sec:The-BML-Traffic-Model} of this paper we will be implementing the \gls{bml} traffic model from scratch.
+To ascertain the assumptions made in Section \ref{sec:The-BML-Traffic-Model} of this paper we will be implementing the \gls{bml} traffic model from scratch and attempt to recreate the simulations under a similar set of hyperparameters.
+
+\subsection{Implementation}
+\label{subsec:Methodology:Implementation}
+Implementing the \gls{bml} traffic model is rather straightforward -- we initialize an $X \times Y$ grid that serves to act as the lattice that the cars will move on. Following that, we populate the grid by placing $\rho \times X \times Y$ (with $0 < \rho < 1)$ cars at random positions throughout the grid making sure that no two cars are occupying the same cell. Once the grid has been populated the cars take alternating turns moving depending on which class they belong to. In our configuration, blue cars move downwards at odd time periods ($t = 1, 3, 5, ...,)$ while red cars move rightwards at even time periods $(t = 2, 4, 6, ...,)$. When a car gets to the edge of the grid it "wraps" around, \eg when a blue car gets to the bottom edge, we reset its position to the top of the grid and, similarly, when a red car gets to the right edge of the grid, we reset its position to the leftmost position on the grid. Finally, before moving, the cars have to consider the following 3 options:
+
+\begin{enumerate}
+    \item The considered location is empty $\rightarrow$ we can move.
+    \item The considered location is occupied by a car of the opposite color $\rightarrow$ we can't move.
+    \item The considered location is occupied by a car of the same color $\rightarrow$ we check to see if the "blocking" car can move and act accordingly as per steps 1 \& 2.
+\end{enumerate}
+
+\noindent To wrap things up, we direct the reader to our GitHub repository located \href{https://github.com/KareemAlSaudi-RUG/Modelling-and-Simulation}{here} that contains the relevant source code as well as further documentation on our (Python) implementation of the \gls{bml} traffic model. The relevant hyperparameters for our experiments are listed in Table \ref{tab:BML-Hyperparameters}.
+
+\begin{table}[htb!]
+        \centering
+        \begin{tabular}{cc} \toprule
+                \tableheadline{\textbf{Hyperparameter}} & \tableheadline{\textbf{Explanation}}                          \\ \midrule
+                $X$                                     & The size of the x-axis of the grid.                           \\
+                $Y$                                     & The size of the y-axis of the grid.                           \\
+                $p(red)$                                & The probability of a car being red.                           \\
+                $\rho$                                  & Density of the cars on the grid $\rho = \frac{n}{X \times Y}$ \\
+                $t$                                     & Number of iterations.                                         \\ \bottomrule
+        \end{tabular}
+        \caption{Hyperparameters of our implementation of the \gls{bml} traffic model.}
+        \label{tab:BML-Hyperparameters}
+\end{table}
+
+\subsection{Experiment 1}
+\label{subsec:Methodology:Experiment-1}
+The first experiment we will be performing is to ascertain that for a square lattice ($X = Y)$ if the total number of cars is less than or equal to half the length of one of the edges of lattice $(n \leq \frac{X}{2})$ then we will \textit{always} achieve a free-flowing state of traffic flow. To do this we will run the simulation under the set of hyperparameters outlined in Table \ref{tab:BML-Experiment-1-Hyperparameters} and document the averaged results over 5 runs under the same value for $\rho$, predominantly noting the percentage of cars that moved at the last time step recorded and checking to see whether, for any of our simulations, the model jammed.
+
+\begin{table}[htb!]
+        \centering
+        \begin{tabular}{cc} \toprule
+                \tableheadline{\textbf{Hyperparameter}} & \tableheadline{\textbf{Value}}                  \\ \midrule
+                $X$                                     & 50                                              \\
+                $Y$                                     & 50                                              \\
+                $p(red)$                                & 0.5                                             \\
+                $\rho$                                  & $0.05 \rightarrow 0.25$ (in increments of 0.05) \\
+                $t$                                     & 2500                                            \\ \bottomrule
+        \end{tabular}
+        \caption{Hyperparameters for experiment 1.}
+        \label{tab:BML-Experiment-1-Hyperparameters}
+\end{table}
+
+\subsection{Experiment 2}
+\label{subsec:Methodology:Experiment-2}
+The second experiment that we will be performing is done to ascertain that as $\rho$ approaches 1 the model will reach a globally jammed phase infinitely often.
+
+\subsection{Experiment 3}
+\label{subsec:Methodology:Experiment-3}
+The final experiment is done to explore the intermediate phase, frequently occurring close to the transition density, which combines features from both the jammed as well as the free-flowing phases. The two principal intermediate phases are \textbf{disordered} and \textbf{periodic}. We'll specifically be looking at whether we can achieve periodic orbits on rectangular lattices with coprime dimensions as per the findings of \citet{DSouza}.
