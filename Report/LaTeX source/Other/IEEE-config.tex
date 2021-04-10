@@ -60,7 +60,7 @@
 %********************************************************************
 % 2.2. General useful packages.
 %********************************************************************
-\usepackage{amsmath}
+\usepackage{amsmath, amssymb, amsfonts}
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{scrhack}
@@ -73,7 +73,7 @@
 %****************************************************************************************************
 \usepackage{tabularx}
 \setlength{\extrarowheight}{3pt}
-\newcommand{\tableheadline}[1]{\multicolumn{1}{c}{\spacedlowsmallcaps{#1}}}
+\newcommand{\tableheadline}[1]{\multicolumn{1}{c}{#1}}
 \newcommand{\myfloatalign}{\centering}
 \usepackage{subfig}
 %****************************************************************************************************
@@ -92,6 +92,7 @@
 	numbersep=5pt,
 	numberstyle=\scriptsize,
 	numbersep=8pt,
+	xleftmargin=2em,
 	showstringspaces=false,
 	breaklines=true,
 	belowcaptionskip=.75\baselineskip,
@@ -108,6 +109,8 @@
 
 \definecolor{codegray}{rgb}{0.95,0.95,0.95}
 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{booktabs}
 \usepackage{changepage}
 \usepackage{float}
