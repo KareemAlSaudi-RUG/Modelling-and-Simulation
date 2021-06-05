@@ -12,44 +12,64 @@ Implementing the \gls{bml} traffic model is rather straightforward -- we initial
     \item The considered location is occupied by a car of the same color $\rightarrow$ we check to see if the "blocking" car can move and act accordingly as per steps 1 \& 2.
 \end{enumerate}
 
-\noindent To wrap things up, we direct the reader to our GitHub repository located \href{https://github.com/KareemAlSaudi-RUG/Modelling-and-Simulation}{here} that contains the relevant source code as well as further documentation on our (Python) implementation of the \gls{bml} traffic model. The relevant hyperparameters for our experiments are listed in Table \ref{tab:BML-Hyperparameters}.
+\noindent To wrap things up, we direct the reader to our GitHub repository located \href{https://github.com/KareemAlSaudi-RUG/Modelling-and-Simulation}{here} that contains the relevant source code as well as further documentation on our (Python) implementation of the \gls{bml} traffic model. The relevant hyperparameters for our experiments are listed in Table \ref{tab:BML-Hyperparameters}. We note that we will be utilizing the original (random) version of the \gls{bml} traffic model when conducting the experiments outlined in Sections \ref{subsec:Methodology:Experiment-1}, \ref{subsec:Methodology:Experiment-2} and \ref{subsec:Methodology:Experiment-3} and point the reader towards the definition of velocity in regards to the \gls{bml} traffic model; oftentimes referred to as either the \textit{"mobility"} or the \textit{"speed"} of the system, it denotes the number of cars that \textit{can} make a move expressed as a fraction over the total number of cars -- this is outlined in Equation \ref{eq:Velocity}. When assessing the validity of our experiments, the velocity of the system will serve to act as the primary metric.
 
 \begin{table}[htb!]
         \centering
-        \begin{tabular}{cc} \toprule
+        \begin{tabular*}{\linewidth}{c@{\extracolsep{\fill}}c} \toprule
                 \tableheadline{\textbf{Hyperparameter}} & \tableheadline{\textbf{Explanation}}                          \\ \midrule
                 $X$                                     & The size of the x-axis of the grid.                           \\
                 $Y$                                     & The size of the y-axis of the grid.                           \\
-                $p(red)$                                & The probability of a car being red.                           \\
                 $\rho$                                  & Density of the cars on the grid $\rho = \frac{n}{X \times Y}$ \\
                 $t$                                     & Number of iterations.                                         \\ \bottomrule
-        \end{tabular}
+        \end{tabular*}
         \caption{Hyperparameters of our implementation of the \gls{bml} traffic model.}
         \label{tab:BML-Hyperparameters}
 \end{table}
 
+\begin{equation}
+    \text{Velocity} (V) = \frac{\text{Number of cars that could move}}{n}
+\label{eq:Velocity}
+\end{equation}
+
 \subsection{Experiment 1}
 \label{subsec:Methodology:Experiment-1}
-The first experiment we will be performing is to ascertain that for a square lattice ($X = Y)$ if the total number of cars is less than or equal to half the length of one of the edges of lattice $(n \leq \frac{X}{2})$ then we will \textit{always} achieve a free-flowing state of traffic flow. To do this we will run the simulation under the set of hyperparameters outlined in Table \ref{tab:BML-Experiment-1-Hyperparameters} and document the averaged results over 5 runs under the same value for $\rho$, predominantly noting the percentage of cars that moved at the last time step recorded and checking to see whether, for any of our simulations, the model jammed.
+The first experiment we will be performing is to ascertain that, assuming a square lattice ($X = Y)$, if the total number of cars is less than or equal to half the length of one of the edges of lattice $\left(n \leq \frac{X}{2}\right)$ then we will \textit{always} achieve a free-flowing state of traffic flow. To do this we will run the simulation under the set of hyperparameters outlined in Table \ref{tab:BML-Experiment-1-Hyperparameters} and document the results predominantly noting the mean velocity of the system for each individual run as well as the velocity at the final iteration, or rather, the number of cars that could move at the final iteration of each simulation.
 
 \begin{table}[htb!]
         \centering
-        \begin{tabular}{cc} \toprule
-                \tableheadline{\textbf{Hyperparameter}} & \tableheadline{\textbf{Value}}                  \\ \midrule
-                $X$                                     & 50                                              \\
-                $Y$                                     & 50                                              \\
-                $p(red)$                                & 0.5                                             \\
-                $\rho$                                  & $0.05 \rightarrow 0.25$ (in increments of 0.05) \\
-                $t$                                     & 2500                                            \\ \bottomrule
-        \end{tabular}
+        \begin{tabular*}{\linewidth}{c@{\extracolsep{\fill}}c} \toprule
+                \tableheadline{\textbf{Hyperparameter}} & \tableheadline{\textbf{Value}}                      \\ \midrule
+                $X$                                     & 64                                                  \\
+                $Y$                                     & 64                                                  \\
+                $\rho$                                  & $0.005 \rightarrow 0.025$ (in increments of 0.001)  \\
+                $t$                                     & 2500                                                \\ \bottomrule
+        \end{tabular*}
         \caption{Hyperparameters for experiment 1.}
         \label{tab:BML-Experiment-1-Hyperparameters}
 \end{table}
 
+\noindent This experiment relates to the deterministic question, posed by \citeauthor{Austin}. They state that, "Given N (where N refers to the length of an edge of a square lattice $N \Leftrightarrow X = Y$), for which $n$ does any initial configuration of the cars inevitably attain speed one \textit{(free-flowing state of traffic)}, and for which is there some initial configuration of the cars which gets stuck \textit{(reaches a jammed state)}." The first proposition made in their paper, and the notion that we will be tackling as part of experiment 1, states: "If $n \leq \frac{1}{2}(N)$ the system must attain speed \textit{(velocity)} one."
+
 \subsection{Experiment 2}
 \label{subsec:Methodology:Experiment-2}
-The second experiment that we will be performing is done to ascertain that as $\rho$ approaches 1 the model will reach a globally jammed phase infinitely often.
+The second experiment that we will be performing is done to ascertain that as $\rho$ approaches 1 the model will reach a globally jammed phase infinitely often. The relevant hyperparameters for this experiment can be found in Table \ref{tab:BML-Experiment-2-Hyperparameters}.
+
+\begin{table}[htb!]
+        \centering
+        \begin{tabular*}{\linewidth}{c@{\extracolsep{\fill}}c} \toprule
+                \tableheadline{\textbf{Hyperparameter}} & \tableheadline{\textbf{Value}}                 \\ \midrule
+                $X$                                     & 64                                             \\
+                $Y$                                     & 64                                             \\
+                $\rho$                                  & $0.005 \rightarrow 1$ (in increments of 0.025) \\
+                $t$                                     & 2500                                           \\ \bottomrule
+        \end{tabular*}
+        \caption{Hyperparameters for experiment 2.}
+        \label{tab:BML-Experiment-2-Hyperparameters}
+\end{table}
+
+\noindent The only notable differences between experiments 1 and 2 are the range in values of $\rho$ that we will be exploring.
 
 \subsection{Experiment 3}
 \label{subsec:Methodology:Experiment-3}
-The final experiment is done to explore the intermediate phase, frequently occurring close to the transition density, which combines features from both the jammed as well as the free-flowing phases. The two principal intermediate phases are \textbf{disordered} and \textbf{periodic}. We'll specifically be looking at whether we can achieve periodic orbits on rectangular lattices with coprime dimensions as per the findings of \citet{DSouza}.
+The final experiment is done to explore the intermediate phase, frequently occurring close to the transition density, which combines features from both the jammed as well as the free-flowing phases. The two principal intermediate phases are \textbf{disordered} and \textbf{periodic}. We'll specifically be looking at whether we can achieve periodic orbits on rectangular lattices with coprime dimensions as per the findings of \citet{DSouza}. Unlike experiments 1 and 2, we will be utilizing a rectangular lattice of coprime dimensions $(144 \times 89)$ and we will be exploring values of $\rho$ that lie in between values that lead to free flowing states of traffic and globally jammed states in order to find $\rho$ values that lead to periodic intermediate phases.
